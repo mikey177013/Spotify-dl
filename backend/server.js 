@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend from ROOT folder
+// Serve your frontend from ROOT folder
 app.use(express.static(path.join(__dirname, "..")));
 
 // ---------- SEARCH API ----------
@@ -47,7 +47,9 @@ app.post("/api/spotify", async (req, res) => {
   res.json(result);
 });
 
-// ---------- SERVER LISTEN ----------
-app.listen(3000, () =>
-  console.log("Server running at http://localhost:3000")
-);
+// ---------- SERVER LISTEN (RENDER-FRIENDLY) ----------
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
