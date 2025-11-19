@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve your frontend from ROOT folder
+// Serve frontend from ROOT folder
 app.use(express.static(path.join(__dirname, "..")));
 
 // ---------- SEARCH API ----------
@@ -40,16 +40,21 @@ app.get("/api/search", async (req, res) => {
 app.post("/api/spotify", async (req, res) => {
   const { url } = req.body;
 
-  if (!url)
+  if (!url) {
     return res.json({ status: "error", message: "No URL provided" });
+  }
 
   const result = await Asu(url);
   res.json(result);
 });
 
-// ---------- SERVER LISTEN (RENDER-FRIENDLY) ----------
-const PORT = process.env.PORT || 3000;
+// ---------- HANDLE SPA ROUTES ----------
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "index.html"));
+});
 
+// ---------- SERVER LISTEN ----------
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
